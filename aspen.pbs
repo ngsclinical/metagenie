@@ -1,0 +1,13 @@
+##PBS -N merge
+#PBS -m ae
+#PBS -j oe
+#PBS -l nodes=1,ncpus=8
+#PBS -l walltime=240:00:00
+#PBS -l mem=175gb
+
+cd $PBS_O_WORKDIR
+
+module load perl
+module load python/2.7.3
+
+perl your_path/metagenie.pl -np 8 -rr y -pd y -fa n metagenome_file.fastq
