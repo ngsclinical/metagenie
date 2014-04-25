@@ -1,0 +1,15 @@
+1. Install the BEDTools bundled in the “external” Directory of the package.
+
+2. Set the iconfig.pm paths for BWA and SAMTOOLS (these are commented as "SET THE PATH"). Index the database with following command (bwa index -a bwtsw microbial.94.1_rf)
+
+3. Run the following command: perl ../metagenie.pl -rr n -pd y -np 2 test6780.fq
+
+4. CD into the directory tmp_blat_bacteria and open the file ALL_MAPPED_TOTAL.bed_TOTAL_SORTBED_TOTAL_GENOMECOV_SUMMARY
+
+5. The final output summary file can be sorted on Genome Coverage or %Genome Coverage for detected pathogens
+
+6. See log/log_stats for the breakdown of the filtration and alignment statistics
+
+7. The configuration in this test file have been set so metgenie can be run easily. Please provide full path name in configuration file to avoid errors.
+
+
