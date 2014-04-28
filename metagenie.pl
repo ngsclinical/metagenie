@@ -92,11 +92,11 @@ __END__
 
 =head1 NAME
 
-metgenie.pl - Identification of metagenome sequences. MetGeniE consist of two modules: Read Reduction and Pathogen Detection. By default, both modules will be performed on the data. The User can switch on and off any of these modules according to the requirement. For more information please see the documentation.
+metagenie.pl - Identification of metagenome sequences. MetaGeniE consist of two modules: ReadReduct and PathoDetect. By default, both modules will be performed on the data. The User can switch on and off any of these modules according to the requirement. For more information please see the documentation.
 
 =head1 SYNOPSIS
 
-metgenie.pl [options] input_file
+metagenie.pl [options] input_file
 
 Options:
   -help
@@ -134,27 +134,23 @@ Options "y/Y" or "N/n". Perform pathogen detection with known database. Default 
 
 =head1 DESCRIPTION
 
-B<metgenie.pl> Default mode, metgenie will filter human reads, identify metagenome reads
+B<metagenie.pl> Default mode, metagenie will filter human reads, identify metagenome reads
 
 =head1 AUTHOR
 
-Arun Rawat, C<< <arawat_atr_tgen_dot_org> >>
+Arun Rawat, C<< <metagenie_dot_dev_atr_gmail_dot_com> >>
 
 =head1 BUGS
 
-Please report your bug/requirements at the email C<< <arawat_atr_tgen_dot_org> >>.
+Please report your bug/requirements at the email C<< <metagenie_dot_dev_atr_gmail_dot_com> >>.
 
 =head1 COPYRIGHT
 
-Copyright (C) 2013-2014  Arun Rawat
+Copyright (C) 2013-2014  Translational Genomics Research Institute
 
 =head1 LICENSE
 
-This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.
+Please see the TGen License with the Release.
 
 
 =cut
