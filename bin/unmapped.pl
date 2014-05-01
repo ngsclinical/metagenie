@@ -18,15 +18,3 @@ $manager->start($file) and next;
 	print $wait_msg;
 
 
-one per sample: cp ../ERR191896/aspen_id.pbs .
-
-mkdir id_95 id_99
-cp id_90/iconfig.pm id_95
-cp id_90/iconfig.pm id_99
-
-ln -s ../../aspen_id.pbs
-ln -s ../ERR191896_readReduct.fasta 
-
-change parameter
-run files
-		
