@@ -10,20 +10,22 @@ use warnings;
 
 (open(headerFH, "<$ARGV[0]")) or die "Can't open file : $ARGV[0] \n";
 (open(uniqOF,"> $ARGV[1]")) or die "Cannot open file $ARGV[1]";
-my @header=();
+#my @header=();
 #my @uniqHeader=();
-#my $cnt=0;
+my $cnt=0;
+my %hashTemp=();
 while (<headerFH>)
 {
 chomp ($_);	
-push(@header,$_);
-#$cnt++;
+$hashTemp{$cnt} = $_;
+#push(@header,$_);
+$cnt++;
 }
 #print scalar(@header), "\n";
 
-my %hashTemp = map { $_ => 1 } @header;
+#my %hashTemp = map { $_ => 1 } @header;
 #@uniqHeader = sort keys %hashTemp;
-for my $row(sort keys %hashTemp)
+foreach my $row(sort keys %hashTemp)
 {
 	print uniqOF $row, "\n";	
 }
