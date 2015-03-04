@@ -15,7 +15,7 @@ my %hashTemp=();
 while (<headerFH>)
 {
 chomp ($_);
-$hashTemp{$_} = $val if !exists $hashTemp{$_};
+$hashTemp{$_} = $val; # if !exists $hashTemp{$_}; No need to validate the hash for the key
 
 }
 
