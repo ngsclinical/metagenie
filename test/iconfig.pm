@@ -20,11 +20,11 @@ package iconfig;
 	our $min_len=50; 
 	our $lc_method="dust";
 	our $lc_threshold=10;
-	our $min_qual=15;
+	our $min_qual=20;
 	our $ns_max_p=3;
 
 #BLAT parameters
-	our $blat_identity = 80;
+	our $blat_identity = 98;
 #####End #####################
 
 
@@ -56,12 +56,13 @@ package iconfig;
 	our $run_viraldb="n"; #Turns search against viral database on or off
 	our $del_tmp_pd="y";#Will delete tmp files like bams and output files generated from each step 
 	our $lcl_alignmnt="y";  #Option will run both local and global alignment. Option "n" will only run global alignment
+	our $lcl_alignmnt="n";  #Option will run local aligner BLAT
 ##########################################
 
 # Paths for executables
 our $bin_dir = "../bin";
 our $script_dir= "../scripts";
-our $blat_exec = "../external/blat";
+our $blat_exec = "../external/blat"; 
 our $bwa_exec = "/your/path/bwa";  ## SET THE PATH OF BWA (Mandatory for Test)
 our $stampy_exec = "/your/path/stampy.py";
 our $bowtie2_exec = "/your/path/bowtie2";

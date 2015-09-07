@@ -36,6 +36,7 @@ my $viral = $iconfig::viral;
 my $run_bacdb=$iconfig::run_bacdb;
 my $run_fungaldb=$iconfig::run_fungaldb;
 my $run_viraldb=$iconfig::run_viraldb;
+my $gbl_alignmnt=$iconfig::gbl_alignmnt;
 my $lcl_alignmnt=$iconfig::lcl_alignmnt;
 my $del_tmp_pd=$iconfig::del_tmp_pd;
 my $tmp_bwa_viral=$iconfig::tmp_bwa_viral;
@@ -152,56 +153,60 @@ print timeLog "The sequence cleaning done:";
 &timeStamp;
 
 $fasta_format="y";
+if ($gbl_alignmnt eq "y" || $gbl_alignmnt eq "Y") {
+	if ($run_bacdb eq "y" || $run_bacdb eq "Y") { 
+		if (-d $bacteria) {
+			$tmp_file_suffix="_renBWA_bacIn";
+			&renameHeader;
 
-if ($run_bacdb eq "y" || $run_bacdb eq "Y") { 
-	if (-d $bacteria) {
-		$tmp_file_suffix="_renBWA_bacIn";
-		&renameHeader;
-
-		$tmp_file_prefix="tmpBWABac_".$input_file_prefix;
-		$tmp_file_suffix="_unmap_bac_bwa.fasta";
-		&gblAlign($tmp_bwa_bacteria,$bacteria);
+			$tmp_file_prefix="tmpBWABac_".$input_file_prefix;
+			$tmp_file_suffix="_unmap_bac_bwa.fasta";
+			&gblAlign($tmp_bwa_bacteria,$bacteria);
+		}
+		else {
+			die "Please set the bacterial database in Configuration file!!  \n";
+		}
 	}
 	else {
-		die "Please set the bacterial database in Configuration file!!  \n";
+		print logStats "Querying Bacterial Genomes turned OFF !! \n";
 	}
-}
-else {
-	print logStats "Querying Bacterial Genomes turned OFF !! \n";
-}
 	
-if ($run_viraldb eq "y" || $run_viraldb eq "Y") {
-	if (-d $viral) {
-		$tmp_file_suffix="_renBWA_viralIn";
-		&renameHeader;
+	if ($run_viraldb eq "y" || $run_viraldb eq "Y") {
+		if (-d $viral) {
+			$tmp_file_suffix="_renBWA_viralIn";
+			&renameHeader;
 
-		$tmp_file_prefix="tmpBWAVir_".$input_file_prefix;
-		$tmp_file_suffix="_unmap_viral_bwa.fasta";
-		&gblAlign($tmp_bwa_viral,$viral);
+			$tmp_file_prefix="tmpBWAVir_".$input_file_prefix;
+			$tmp_file_suffix="_unmap_viral_bwa.fasta";
+			&gblAlign($tmp_bwa_viral,$viral);
+		}
+		else {
+			die "Please set the viral database in Configuration file!!  \n";
+		}
 	}
 	else {
-		die "Please set the viral database in Configuration file!!  \n";
+		print logStats "Querying Viral Genomes turned OFF!! \n";
+		}
+
+	if ($run_fungaldb eq "y" || $run_fungaldb eq "Y") {
+		if (-d $fungal) {
+			$tmp_file_suffix="_renBWA_fungiIn";
+			&renameHeader;
+
+			$tmp_file_prefix="tmpBWAFungi_".$input_file_prefix;
+			$tmp_file_suffix="_unmap_fungi_bwa.fasta";
+			&gblAlign($tmp_bwa_fungal,$fungal);
+		}
+		else {
+			die "Please set the fungal database in Configuration file!!  \n";
+		}
+	}	
+	else {
+		print logStats "Querying Fungal Genomes turned OFF!! \n";
 	}
 }
 else {
-	print logStats "Querying Viral Genomes turned OFF!! \n";
-	}
-
-if ($run_fungaldb eq "y" || $run_fungaldb eq "Y") {
-	if (-d $fungal) {
-		$tmp_file_suffix="_renBWA_fungiIn";
-		&renameHeader;
-
-		$tmp_file_prefix="tmpBWAFungi_".$input_file_prefix;
-		$tmp_file_suffix="_unmap_fungi_bwa.fasta";
-		&gblAlign($tmp_bwa_fungal,$fungal);
-	}
-	else {
-		die "Please set the fungal database in Configuration file!!  \n";
-	}
-}
-else {
-	print logStats "Querying Fungal Genomes turned OFF!! \n";
+        print logStats "Settings for Local Alignment turned OFF!! \n";
 }
 
 if ($lcl_alignmnt eq "y" || $lcl_alignmnt eq "Y") {
@@ -298,11 +303,12 @@ sub genomeCoverage {
 	my $tmp_output_file;
 	my $tmp_input_file;
 
-	$tmp_input_file=<$tmp_bwa/ALL_MAPPED.bed>;
-	$tmp_output_file=$tmp_blat."/ALL_MAPPED_TOTAL.bed";
-
-	$sh_cmd="cat $tmp_input_file >> $tmp_output_file";
-	system($sh_cmd)== 0 or &errorMessage(" $sh_cmd failed: $?");
+	$tmp_output_file=$tmp_blat."/ALL_MAPPED_TOTAL.bed";	
+	if ($gbl_alignmnt eq "y" || $gbl_alignmnt eq "Y") {
+		$tmp_input_file=<$tmp_bwa/ALL_MAPPED.bed>;
+		$sh_cmd="cat $tmp_input_file >> $tmp_output_file";
+		system($sh_cmd)== 0 or &errorMessage(" $sh_cmd failed: $?");
+	}
 
 	$tmp_input_file=<$tmp_blat/ALL_MAPPED.bed>;
 	$sh_cmd="cat $tmp_input_file >> $tmp_output_file";
@@ -641,13 +647,21 @@ sub pathoAlign {
 			$sh_cmd="$gencov_exec -i $tmp_input_file -g $patho_dir/GenomeDesc > $tmp_output_file";
 			system($sh_cmd) == 0 or &errorMessage(" $sh_cmd failed: $?");
 		}
+
+		if (-s $tmp_output_file != 0) {
+                $tmp_input_file=$tmp_output_file;
+                $tmp_output_file=$tmp_input_file."_SUMMARY";
+                @cmd=("perl", "$mult_covcalc_script", "$tmp_input_file", "$tmp_output_file");
+                system(@cmd) == 0 or &errorMessage(" @cmd failed: $?");
+        	}
+
 	}
-	if ($del_tmp_pd eq "y" || $del_tmp_pd eq "Y") {
-		my @tmp_suffix =(".bam", "ALL_UNMAPPED_HEADER", "ALL_MAPPED_HEADER", "UNIQHEADER", "_TOTAL_SORTBED") ;
+		if ($del_tmp_pd eq "y" || $del_tmp_pd eq "Y") {
+		my @tmp_suffix =(".bam", "ALL_UNMAPPED_HEADER", "ALL_MAPPED_HEADER", "UNIQHEADER", "_SORTBED", "_SORTBED_GENOMECOV" ) ;
 		foreach(@tmp_suffix) {
 			$tmp_file_suffix=$_;
 			&unlinkFiles($dir,$tmp_file_suffix);
-		}
+	}
 	}
 }
 

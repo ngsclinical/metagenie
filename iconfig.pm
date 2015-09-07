@@ -17,20 +17,20 @@ package iconfig;
 	my $curr_dir=`pwd`;
 	chomp $curr_dir;
 	our $wait_time=500;
-	our $min_len=50; 
+	our $min_len=100; 
 	our $lc_method="dust";
 	our $lc_threshold=10;
-	our $min_qual=15;
+	our $min_qual=20;
 	our $ns_max_p=3;
 
 #BLAT parameters
-	our $blat_identity = 80;
+	our $blat_identity = 98;
 #####End #####################
 
 
 ########Variables for Read-Reduct Module############
 # multiple human/host reference genomes can be used
-	our $human_ref_hg19 = "/set/the/directory/hs_ref_GRCh37_p5.fa";
+	our $human_ref_hg19 = "/set/the/directory/hg19.fa";
 	our $human_ref_cn = "/set/the/directory/cnGenome.fa";
 	our $human_ref_kr = "/set/the/directory/krGenome.fa";
 	our $repeat = "/set/the/directory/RepeatLib.fasta";
@@ -46,31 +46,32 @@ package iconfig;
 ###########End of Read-Reduct Module#############
 
 #######Variable for Patho-Detect###############
-	our $bacteria = "/set/the/directory/microbialDB"; #See README to set pathogen database
-	our $fungal = "/set/the/directory/fungiDB"; #See README to set pathogen database
-	our $viral = "/set/the/directory/viralDB"; #See README to set pathogen database
+    our $bacteria = "/set/the/directory/bacterialDB";
+	our $fungal = "/set/the/directory/fungiDB"; 
+	our $viral = "/set/the/directory/viralDB"; 
 	
 	#Option to run database
 	our $run_bacdb="y"; #Turns search against bacterial database on or off
 	our $run_fungaldb="n"; #Turns search against fungal database on or off
 	our $run_viraldb="n"; #Turns search against viral database on or off
 	our $del_tmp_pd="y";#Will delete tmp files like bams and output files generated from each step 
-	our $lcl_alignmnt="y";  #Option will run both local and global alignment. Option "n" will only run global alignment
+    our $gbl_alignmnt="y";  #Option will run global aligner BWA or Bowtie
+	our $lcl_alignmnt="n";  #Option will run local aligner BLAT
 ##########################################
 
 # Paths for executables
-our $bin_dir = "/your/path/metagenie.v1.1/bin";
-our $script_dir= "/your/path/metagenie.v1.1/scripts";
-our $blat_exec = "/your/path/metagenie.v1.1/external/blat";
-our $bwa_exec = "/your/path/bwa";
+our $bin_dir = "/set/the/directory/metagenie/bin";
+our $script_dir= "/set/the/directory/metagenie/scripts";
+our $blat_exec = "/set/the/directory/metagenie/external/blat";
+our $bwa_exec = "/set/the/directory/bwa";  
 our $stampy_exec = "/your/path/stampy.py";
-our $bowtie2_exec = "/your/path/bowtie2";
-our $prinseq_exec = "/your/path/metagenie.v1.1/external/prinseq-lite.pl";
-our $samtools_exec= "/your/path/samtools";
-our $formatdb_exec="/your/path/metagenie.v1.1/external/formatdb";
-our $fastacmd_exec="/your/path/metagenie.v1.1/external/fastacmd";
-our $sortbed_exec="/your/path/metagenie.v1.1/external/bedtools/bin/sortBed";
-our $gencov_exec="/your/path/metagenie.v1.1/external/bedtools/bin/genomeCoverageBed";
+our $bowtie2_exec = "/set/the/directory/bowtie2";
+our $prinseq_exec = "/set/the/directory/metagenie/external/prinseq-lite.pl";
+our $samtools_exec= "/set/the/directory/SAMtools/0.1.19/samtools"; 
+our $formatdb_exec="/set/the/directory/blast/2.2.17/bin/formatdb";
+our $fastacmd_exec="/set/the/directory/blast/2.2.17/bin/fastacmd";
+our $sortbed_exec="/set/the/directory/bedtools/2.22/bin/sortBed"; ## Install the Bedtool package available in directory external
+our $gencov_exec="/set/the/directory/bedtools/2.22/bin/genomeCoverageBed"; ## Install the Bedtool package available in directory external
 
 # Temp folder
 our $tmp_blat_rr=$curr_dir."/tmp_blat_rr";
