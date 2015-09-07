@@ -115,15 +115,15 @@ blockStarts
          $relative_t_starts =~ s/,$//;
          #For UCSC Genome Browser add 1 to end
          $tEnd += 1;
-                        #BED  chrom,chromStart,chromEnd,name  ,score ,strand ,thickStart,thickEnd,itemRgb,blockCount ,blockSizes ,blockStarts
+         #BED  chrom,chromStart,chromEnd,name  ,score ,strand ,thickStart,thickEnd,itemRgb,blockCount ,blockSizes ,blockStarts
          #print OUT join("\t",$tName,$tStart   ,$tEnd   ,$qName,$score,$strand,$tStart   ,$tEnd   ,$red   ,$blockCount,$blockSizes,$relative_t_starts),"\n";
-         #### MODIFIED here
-         if (($tEnd - $tStart)<125) ## This is a quick fix to obfuscate wrong coordinates that bloat the output
-         {
-         print OUT join("\t",$tName,$tStart   ,$tEnd   ,$qName,$score,$strand),"\n";
-         #print OUT join("\t",$tName,$tStart   ,$tEnd   ,$qName,$score,$strand,$tStart   ,$tEnd   ,$red   ,$blockCount,$blockSizes,$tStarts),"\n";
-		 }
-		 
+         #### MODIFICATION START###
+
+	my $span=abs($qEnd-$qStart);
+        $span=$tStart+$span;
+ 	#print join("\t",$tName,$qStart   ,$qEnd   ,$tStart, $span, $qName,$score,$strand),"\n";
+        print OUT join("\t",$tName,$tStart   ,$span   ,$qName,$score,$strand),"\n";
+	####MODIFICATION END#####	 
          #For GFF
          #for (my $j = 0; $j < $blockCount; ++$j){
          #   my $tBlockEnd = $split_target_block_start[$j] + $splitBlockSizes[$j];
